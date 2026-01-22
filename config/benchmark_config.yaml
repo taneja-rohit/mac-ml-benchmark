@@ -1,0 +1,33 @@
+# Benchmark Configuration
+# Mac ML Benchmark Suite
+
+hardware:
+  expected_chip: "Apple M5 Pro"  # Will be verified
+  
+model:
+  name: "mistralai/Mistral-7B-v0.1"
+  dtype: "float16"  # float32 too large for 7B
+  
+benchmarks:
+  compute:
+    gemm_sizes: [512, 1024, 2048, 4096, 8192]
+    dtypes: ["float32", "float16"]
+    warmup_iters: 5
+    bench_iters: 20
+    
+  attention:
+    seq_lengths: [512, 1024, 2048, 4096]
+    num_heads: 32
+    head_dim: 128
+    batch_size: 1
+    
+  memory:
+    sizes_gb: [0.1, 0.5, 1.0, 2.0, 4.0]
+    
+  model_level:
+    batch_sizes: [1, 2, 4]
+    seq_lengths: [128, 256, 512]
+    
+output:
+  results_dir: "results/raw"
+  reports_dir: "results/reports"

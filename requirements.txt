@@ -1,0 +1,28 @@
+# Core ML frameworks
+torch>=2.0
+torchvision
+torchaudio
+
+# MLX (Apple's framework)
+mlx
+mlx-lm
+
+# Hugging Face
+transformers
+datasets
+accelerate
+safetensors
+huggingface_hub
+
+# Utilities
+numpy
+pandas
+matplotlib
+seaborn
+tqdm
+pyyaml
+psutil
+rich  # Pretty console output
+
+# Optional: for detailed profiling
+# py-spy  # CPU profiling

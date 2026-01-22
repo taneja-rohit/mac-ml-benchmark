@@ -1,0 +1,30 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+._*
+
+# Results (optional - uncomment to ignore)
+# results/raw/
+# results/reports/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model cache
+.cache/
+models/
