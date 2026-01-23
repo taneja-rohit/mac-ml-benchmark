@@ -380,7 +380,7 @@ def benchmark_transformer_block_mlx(
 # ============================================================================
 
 def benchmark_mistral_mlx(
-    model_name: str = "mlx-community/Mistral-7B-v0.1-4bit",
+    model_name: str = "mlx-community/Mistral-7B-Instruct-v0.2-4bit",
     seq_lengths: List[int] = [128, 256, 512],
     warmup_iters: int = 2,
     bench_iters: int = 5,

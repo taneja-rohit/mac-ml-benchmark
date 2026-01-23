@@ -1,0 +1,138 @@
+{
+  "framework": "pytorch_mps",
+  "timestamp": "2026-01-22T23:24:34.629841",
+  "benchmarks": {
+    "bandwidth": [
+      {
+        "name": "sequential_read",
+        "framework": "pytorch_mps",
+        "size_gb": 0.09999707713723183,
+        "time_ms": 1.1400042000104804,
+        "bandwidth_gbs": 94.18477931836821,
+        "extra": null
+      },
+      {
+        "name": "sequential_write",
+        "framework": "pytorch_mps",
+        "size_gb": 0.09999707713723183,
+        "time_ms": 1.2450209999940398,
+        "bandwidth_gbs": 86.24034775358328,
+        "extra": null
+      },
+      {
+        "name": "copy",
+        "framework": "pytorch_mps",
+        "size_gb": 0.09999707713723183,
+        "time_ms": 1.131833599993115,
+        "bandwidth_gbs": 189.72938071577508,
+        "extra": null
+      },
+      {
+        "name": "sequential_read",
+        "framework": "pytorch_mps",
+        "size_gb": 0.25,
+        "time_ms": 1.2241334000009374,
+        "bandwidth_gbs": 219.28611375181367,
+        "extra": null
+      },
+      {
+        "name": "sequential_write",
+        "framework": "pytorch_mps",
+        "size_gb": 0.25,
+        "time_ms": 1.5743456000052447,
+        "bandwidth_gbs": 170.50605407040598,
+        "extra": null
+      },
+      {
+        "name": "copy",
+        "framework": "pytorch_mps",
+        "size_gb": 0.25,
+        "time_ms": 2.608887400003823,
+        "bandwidth_gbs": 205.78539035422276,
+        "extra": null
+      },
+      {
+        "name": "sequential_read",
+        "framework": "pytorch_mps",
+        "size_gb": 0.49997949972748756,
+        "time_ms": 2.5341040999990128,
+        "bandwidth_gbs": 211.84958423776243,
+        "extra": null
+      },
+      {
+        "name": "sequential_write",
+        "framework": "pytorch_mps",
+        "size_gb": 0.49997949972748756,
+        "time_ms": 4.526683099999218,
+        "bandwidth_gbs": 118.59652821733704,
+        "extra": null
+      },
+      {
+        "name": "copy",
+        "framework": "pytorch_mps",
+        "size_gb": 0.49997949972748756,
+        "time_ms": 4.875470799993309,
+        "bandwidth_gbs": 220.22443453080953,
+        "extra": null
+      },
+      {
+        "name": "sequential_read",
+        "framework": "pytorch_mps",
+        "size_gb": 1.0,
+        "time_ms": 4.24015830000144,
+        "bandwidth_gbs": 253.2315418506039,
+        "extra": null
+      },
+      {
+        "name": "sequential_write",
+        "framework": "pytorch_mps",
+        "size_gb": 1.0,
+        "time_ms": 8.893254200006595,
+        "bandwidth_gbs": 120.73666172717786,
+        "extra": null
+      },
+      {
+        "name": "copy",
+        "framework": "pytorch_mps",
+        "size_gb": 1.0,
+        "time_ms": 9.38820000000078,
+        "bandwidth_gbs": 228.74285251697043,
+        "extra": null
+      },
+      {
+        "name": "sequential_read",
+        "framework": "pytorch_mps",
+        "size_gb": 1.4999671131372452,
+        "time_ms": 6.3931419000027745,
+        "bandwidth_gbs": 251.92267733010917,
+        "extra": null
+      },
+      {
+        "name": "sequential_write",
+        "framework": "pytorch_mps",
+        "size_gb": 1.4999671131372452,
+        "time_ms": 17.364395599992122,
+        "bandwidth_gbs": 92.75171224506835,
+        "extra": null
+      },
+      {
+        "name": "copy",
+        "framework": "pytorch_mps",
+        "size_gb": 1.4999671131372452,
+        "time_ms": 13.985641699991902,
+        "bandwidth_gbs": 230.31870235899615,
+        "extra": null
+      }
+    ],
+    "max_allocation": {
+      "name": "max_allocation",
+      "framework": "pytorch_mps",
+      "size_gb": 11.999644432216883,
+      "time_ms": 0.0,
+      "bandwidth_gbs": 0.0,
+      "extra": {
+        "device": "mps"
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+======================================================================
+MAC ML BENCHMARK SUMMARY REPORT
+Generated: 2026-01-22T23:24:48.789017
+======================================================================
+
+## HARDWARE
+  Chip: M4 Pro
+  CPU Cores: 12
+  GPU Cores: 10
+  Memory: 24 GB
+  MPS Available: True
+  MLX Available: True
+
+## PYTORCH + MPS RESULTS
+
+  GEMM Performance:
+    512x512      (float32 ): 0.68 TFLOPS
+    1024x1024    (float32 ): 2.52 TFLOPS
+    2048x2048    (float32 ): 5.16 TFLOPS
+    4096x4096    (float32 ): 5.50 TFLOPS
+    8192x8192    (float32 ): 5.44 TFLOPS
+    512x512      (float16 ): 0.71 TFLOPS
+    1024x1024    (float16 ): 2.78 TFLOPS
+    2048x2048    (float16 ): 5.64 TFLOPS
+    4096x4096    (float16 ): 6.03 TFLOPS
+    8192x8192    (float16 ): 6.07 TFLOPS
+
+  Peak Achieved: 6.07 TFLOPS (PyTorch+MPS)
+
+## MLX RESULTS
+
+  GEMM Performance:
+    512x512      (float32 ): 0.61 TFLOPS
+    1024x1024    (float32 ): 3.10 TFLOPS
+    2048x2048    (float32 ): 5.04 TFLOPS
+    4096x4096    (float32 ): 5.35 TFLOPS
+    8192x8192    (float32 ): 5.35 TFLOPS
+    512x512      (float16 ): 1.22 TFLOPS
+    1024x1024    (float16 ): 3.94 TFLOPS
+    2048x2048    (float16 ): 5.67 TFLOPS
+    4096x4096    (float16 ): 6.04 TFLOPS
+    8192x8192    (float16 ): 6.08 TFLOPS
+
+  Peak Achieved: 6.08 TFLOPS (MLX)
+
+## MEMORY BANDWIDTH
+  Peak Read Bandwidth: 253.2 GB/s
+  Peak Copy Bandwidth: 230.3 GB/s
+  Max GPU Allocation: 12.0 GB
+
+## FRAMEWORK COMPARISON
+  (Compare GEMM TFLOPS at same sizes between PyTorch and MLX)
+
+======================================================================

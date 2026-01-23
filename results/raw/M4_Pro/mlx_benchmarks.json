@@ -1,0 +1,298 @@
+{
+  "framework": "mlx",
+  "device": "Device(gpu, 0)",
+  "timestamp": "2026-01-22T23:22:34.371212",
+  "benchmarks": {
+    "gemm": [
+      {
+        "name": "gemm_512x512",
+        "framework": "mlx",
+        "size": "512x512",
+        "dtype": "float32",
+        "time_ms": 0.4428437000001395,
+        "tflops": 0.6061629780437555,
+        "bandwidth_gbs": 7.1034723989502595,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.12275333856844464,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_1024x1024",
+        "framework": "mlx",
+        "size": "1024x1024",
+        "dtype": "float32",
+        "time_ms": 0.6930229000033705,
+        "tflops": 3.0987196065087543,
+        "bandwidth_gbs": 18.156560194387232,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.18069166352167088,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_2048x2048",
+        "framework": "mlx",
+        "size": "2048x2048",
+        "dtype": "float32",
+        "time_ms": 3.4067895999953635,
+        "tflops": 5.042832461395146,
+        "bandwidth_gbs": 14.773923226743587,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.030900955063760855,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_4096x4096",
+        "framework": "mlx",
+        "size": "4096x4096",
+        "dtype": "float32",
+        "time_ms": 25.68040414999757,
+        "tflops": 5.351899941653099,
+        "bandwidth_gbs": 7.839697180155907,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.2624191330870195,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_8192x8192",
+        "framework": "mlx",
+        "size": "8192x8192",
+        "dtype": "float32",
+        "time_ms": 205.5869144000013,
+        "tflops": 5.348159589752533,
+        "bandwidth_gbs": 3.917109074525781,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 1.9304942989023453,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_512x512",
+        "framework": "mlx",
+        "size": "512x512",
+        "dtype": "float16",
+        "time_ms": 0.22067284999991443,
+        "tflops": 1.2164407900659464,
+        "bandwidth_gbs": 7.127582754292654,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.14430459362280268,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_1024x1024",
+        "framework": "mlx",
+        "size": "1024x1024",
+        "dtype": "float16",
+        "time_ms": 0.545345850005674,
+        "tflops": 3.9378380673065663,
+        "bandwidth_gbs": 11.536634962812206,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.14410664843420995,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_2048x2048",
+        "framework": "mlx",
+        "size": "2048x2048",
+        "dtype": "float16",
+        "time_ms": 3.0295020500005876,
+        "tflops": 5.670855771164329,
+        "bandwidth_gbs": 8.306917633541499,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.049726618216939404,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_4096x4096",
+        "framework": "mlx",
+        "size": "4096x4096",
+        "dtype": "float16",
+        "time_ms": 22.740608249998218,
+        "tflops": 6.04376769350533,
+        "bandwidth_gbs": 4.426587666141598,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.026722850374421826,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_8192x8192",
+        "framework": "mlx",
+        "size": "8192x8192",
+        "dtype": "float16",
+        "time_ms": 180.86154790000535,
+        "tflops": 6.079300108522224,
+        "bandwidth_gbs": 2.2263061920857754,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 1.898499663873195,
+          "iterations": 20
+        }
+      }
+    ],
+    "attention": [
+      {
+        "name": "attention_seq512",
+        "framework": "mlx",
+        "size": "seq=512, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 2.53922100000068,
+        "tflops": 1.6914507622608865,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 16.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 512
+        }
+      },
+      {
+        "name": "attention_seq1024",
+        "framework": "mlx",
+        "size": "seq=1024, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 5.661112400008506,
+        "tflops": 3.034716142356437,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 64.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 1024
+        }
+      },
+      {
+        "name": "attention_seq2048",
+        "framework": "mlx",
+        "size": "seq=2048, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 16.679983400001674,
+        "tflops": 4.1198768061119955,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 256.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 2048
+        }
+      },
+      {
+        "name": "attention_seq4096",
+        "framework": "mlx",
+        "size": "seq=4096, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 63.088095699987434,
+        "tflops": 4.357048725185325,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 1024.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 4096
+        }
+      }
+    ],
+    "transformer_block": [
+      {
+        "name": "transformer_block_seq256",
+        "framework": "mlx",
+        "size": "seq=256, hidden=4096",
+        "dtype": "float16",
+        "time_ms": 21.58620440000618,
+        "tflops": 5.8198185785716,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "hidden_size": 4096,
+          "num_heads": 32,
+          "intermediate_size": 14336,
+          "seq_len": 256
+        }
+      },
+      {
+        "name": "transformer_block_seq512",
+        "framework": "mlx",
+        "size": "seq=512, hidden=4096",
+        "dtype": "float16",
+        "time_ms": 42.93202499999893,
+        "tflops": 5.902425298224491,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "hidden_size": 4096,
+          "num_heads": 32,
+          "intermediate_size": 14336,
+          "seq_len": 512
+        }
+      },
+      {
+        "name": "transformer_block_seq1024",
+        "framework": "mlx",
+        "size": "seq=1024, hidden=4096",
+        "dtype": "float16",
+        "time_ms": 87.41017070000794,
+        "tflops": 5.896294119923886,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "hidden_size": 4096,
+          "num_heads": 32,
+          "intermediate_size": 14336,
+          "seq_len": 1024
+        }
+      }
+    ],
+    "mistral_mlx": [
+      {
+        "name": "mistral_mlx",
+        "framework": "mlx",
+        "size": "",
+        "dtype": "",
+        "time_ms": 0.0,
+        "tflops": 0.0,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "error": "401 Client Error. (Request ID: Root=1-69732232-06e5e2806d4891c70e5b8ae3;419a42f1-7b8a-4a4d-a657-14283515a813)\n\nRepository Not Found for url: https://huggingface.co/api/models/mlx-community/Mistral-7B-v0.1-4bit/revision/main.\nPlease make sure you specified the correct `repo_id` and `repo_type`.\nIf you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication\nInvalid username or password."
+        }
+      }
+    ]
+  }
+}

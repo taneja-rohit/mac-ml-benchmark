@@ -1,0 +1,26 @@
+{
+  "pytorch_mps": [
+    {"size": 512, "dtype": "float32", "avg_ms": 0.39, "tflops": 0.68},
+    {"size": 1024, "dtype": "float32", "avg_ms": 0.85, "tflops": 2.52},
+    {"size": 2048, "dtype": "float32", "avg_ms": 3.33, "tflops": 5.16},
+    {"size": 4096, "dtype": "float32", "avg_ms": 24.98, "tflops": 5.50},
+    {"size": 8192, "dtype": "float32", "avg_ms": 202.18, "tflops": 5.44},
+    {"size": 512, "dtype": "float16", "avg_ms": 0.38, "tflops": 0.71},
+    {"size": 1024, "dtype": "float16", "avg_ms": 0.77, "tflops": 2.78},
+    {"size": 2048, "dtype": "float16", "avg_ms": 3.05, "tflops": 5.64},
+    {"size": 4096, "dtype": "float16", "avg_ms": 22.78, "tflops": 6.03},
+    {"size": 8192, "dtype": "float16", "avg_ms": 181.03, "tflops": 6.07}
+  ],
+  "mlx": [
+    {"size": 512, "dtype": "float32", "avg_ms": 0.44, "tflops": 0.61},
+    {"size": 1024, "dtype": "float32", "avg_ms": 0.69, "tflops": 3.10},
+    {"size": 2048, "dtype": "float32", "avg_ms": 3.41, "tflops": 5.04},
+    {"size": 4096, "dtype": "float32", "avg_ms": 25.68, "tflops": 5.35},
+    {"size": 8192, "dtype": "float32", "avg_ms": 205.59, "tflops": 5.35},
+    {"size": 512, "dtype": "float16", "avg_ms": 0.22, "tflops": 1.22},
+    {"size": 1024, "dtype": "float16", "avg_ms": 0.55, "tflops": 3.94},
+    {"size": 2048, "dtype": "float16", "avg_ms": 3.03, "tflops": 5.67},
+    {"size": 4096, "dtype": "float16", "avg_ms": 22.74, "tflops": 6.04},
+    {"size": 8192, "dtype": "float16", "avg_ms": 180.86, "tflops": 6.08}
+  ]
+}

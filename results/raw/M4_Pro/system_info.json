@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-01-22T23:17:37.758672",
+  "hostname": "Rohits-MacBook-Pro.local",
+  "chip": {
+    "brand_string": "Apple M4 Pro",
+    "core_count": 12,
+    "thread_count": 12,
+    "chip_name": "M4 Pro",
+    "model_name": "MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "chip_type": "Apple M4 Pro",
+    "cores_description": "proc 12:8:4"
+  },
+  "memory": {
+    "total_gb": 24.0,
+    "total_bytes": 25769803776,
+    "free_gb": 0.471954345703125,
+    "theoretical_bandwidth_gbs": "TBD (will measure)"
+  },
+  "gpu": {
+    "gpu_name": "Apple M4 Pro",
+    "metal_family": "spdisplays_metal4",
+    "gpu_cores_estimate": 10,
+    "mps_available": true,
+    "mps_built": true,
+    "mlx_available": true,
+    "mlx_default_device": "Device(gpu, 0)"
+  },
+  "neural_engine": {
+    "neural_engine_cores": 16,
+    "neural_engine_available": true
+  },
+  "storage": {
+    "total_gb": 460.4317207336426,
+    "free_gb": 383.3817558288574,
+    "used_gb": 77.04996490478516,
+    "is_ssd": true
+  },
+  "network": {
+    "wifi_ip": "10.0.0.139",
+    "thunderbolt_ip": null
+  },
+  "software": {
+    "macos_version": "26.2",
+    "macos_build": "arm64",
+    "python_version": "3.9.6",
+    "pytorch_version": "2.8.0",
+    "mlx_version": "0.29.3",
+    "transformers_version": "4.57.6"
+  }
+}

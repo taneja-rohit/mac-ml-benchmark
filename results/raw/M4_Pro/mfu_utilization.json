@@ -1,0 +1,31 @@
+{
+  "float32": {
+    "achieved_tflops": 5.50,
+    "theoretical_tflops": 10.0,
+    "mfu_percent": 55.0,
+    "best_size": 4096
+  },
+  "float16": {
+    "achieved_tflops": 6.08,
+    "theoretical_tflops": 20.0,
+    "mfu_percent": 30.4,
+    "best_size": 8192
+  },
+  "sustained_fp16": {
+    "tflops": 5.90,
+    "mfu_percent": 29.5,
+    "note": "Transformer block benchmark"
+  },
+  "memory_bandwidth": {
+    "theoretical_gbs": 273,
+    "achieved_read_gbs": 253.2,
+    "achieved_copy_gbs": 230.3,
+    "utilization_percent": 92.7
+  },
+  "model_level_mfu": {
+    "model": "Mistral-7B",
+    "inference_tokens_per_sec": 368,
+    "achieved_tflops": 5.33,
+    "mfu_percent": 35.5
+  }
+}

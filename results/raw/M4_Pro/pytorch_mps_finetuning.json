@@ -1,0 +1,17 @@
+{
+  "benchmark": "pytorch_mps_finetuning",
+  "model": "mistralai/Mistral-7B-v0.1",
+  "precision": "float16",
+  "trainable_params": 671088640,
+  "total_params": 7241732096,
+  "steps": 20,
+  "batch_size": 1,
+  "seq_length": 256,
+  "time_seconds": 48.97336196899414,
+  "tokens": 5120,
+  "tokens_per_second": 104.54663094687186,
+  "start_loss": 12.285186767578125,
+  "final_loss": NaN,
+  "peak_memory_gb": 20.98877716064453,
+  "timestamp": "2026-01-22T23:33:49.091966"
+}

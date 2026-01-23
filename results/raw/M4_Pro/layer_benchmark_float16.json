@@ -1,0 +1,66 @@
+{
+  "pytorch_mps": {
+    "256": {
+      "attention_ms": 7.39,
+      "attention_tflops": 2.4,
+      "attention_backward_ms": 53.49,
+      "ffn_ms": 16.58,
+      "ffn_tflops": 5.44,
+      "ffn_backward_ms": 35.99,
+      "full_layer_ms": 23.97,
+      "backward_ms": 89.48
+    },
+    "512": {
+      "attention_ms": 14.28,
+      "attention_tflops": 2.56,
+      "attention_backward_ms": 28.33,
+      "ffn_ms": 32.52,
+      "ffn_tflops": 5.55,
+      "ffn_backward_ms": 66.65,
+      "full_layer_ms": 46.8,
+      "backward_ms": 94.98
+    },
+    "1024": {
+      "attention_ms": 30.72,
+      "attention_tflops": 2.52,
+      "attention_backward_ms": 59.26,
+      "ffn_ms": 65.3,
+      "ffn_tflops": 5.52,
+      "ffn_backward_ms": 127.9,
+      "full_layer_ms": 96.02,
+      "backward_ms": 187.17
+    }
+  },
+  "mlx": {
+    "256": {
+      "attention_ms": 7.27,
+      "attention_tflops": 2.44,
+      "attention_backward_ms": 13.05,
+      "ffn_ms": 18.26,
+      "ffn_tflops": 4.94,
+      "ffn_backward_ms": 31.41,
+      "full_layer_ms": 25.53,
+      "backward_ms": 44.45
+    },
+    "512": {
+      "attention_ms": 14.76,
+      "attention_tflops": 2.47,
+      "attention_backward_ms": 28.01,
+      "ffn_ms": 36.64,
+      "ffn_tflops": 4.92,
+      "ffn_backward_ms": 63.33,
+      "full_layer_ms": 51.4,
+      "backward_ms": 91.34
+    },
+    "1024": {
+      "attention_ms": 32.44,
+      "attention_tflops": 2.38,
+      "attention_backward_ms": 64.19,
+      "ffn_ms": 74.3,
+      "ffn_tflops": 4.86,
+      "ffn_backward_ms": 130.41,
+      "full_layer_ms": 106.74,
+      "backward_ms": 194.6
+    }
+  }
+}
