@@ -86,7 +86,7 @@ The **Roofline Model** below proves that Mistral-7B inference is strictly **Memo
 
 ---
 
-## 📉 Ruthless Raw Data
+##  Raw Data
 
 ### 1. GEMM Performance (Float16)
 | Matrix Size | M5 (TFLOPS) | M4 Pro (TFLOPS) |
@@ -111,7 +111,7 @@ The **Roofline Model** below proves that Mistral-7B inference is strictly **Memo
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 *   `benchmarks/`: Core logic for compute, memory, and model tests.
 *   `distributed/`: Tools for multi-Mac training (Traffic monitoring).
 *   `visualizations/`: Roofline and traffic plotting scripts.
@@ -119,6 +119,12 @@ The **Roofline Model** below proves that Mistral-7B inference is strictly **Memo
 
 ---
 
-## 📖 Further Reading
+##  Further Reading
 - [Detailed Analysis & Strategy](M5_VS_M4_PRO_ANALYSIS.md)
 - [Technical Constraints & Learnings](CONSTRAINTS_AND_LEARNINGS.md)
+
+## Next: What am I thinking 
+- Deepseek MoE 16B with distributed fine-tune over M5 and M4 connected over thunderbolt
+- Disaggregated fine-tuning (Prefill on flops heavy M5 and decode on high throughput M4) 
+
+
