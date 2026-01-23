@@ -1,0 +1,57 @@
+{
+  "pytorch_mps": {
+    "256": {
+      "attention_ms": 2.5,
+      "attention_tflops": 14.15,
+      "ffn_ms": 6.6,
+      "ffn_tflops": 13.66,
+      "full_layer_ms": 9.11,
+      "backward_ms": 18.25,
+      "memory_gb": 0.44
+    },
+    "512": {
+      "attention_ms": 5.22,
+      "attention_tflops": 13.98,
+      "ffn_ms": 13.0,
+      "ffn_tflops": 13.88,
+      "full_layer_ms": 18.22,
+      "backward_ms": 39.52,
+      "memory_gb": 0.46
+    },
+    "1024": {
+      "attention_ms": 13.04,
+      "attention_tflops": 11.86,
+      "ffn_ms": 28.58,
+      "ffn_tflops": 12.62,
+      "full_layer_ms": 41.61,
+      "backward_ms": 86.88,
+      "memory_gb": 0.47
+    }
+  },
+  "mlx": {
+    "256": {
+      "attention_ms": 6.44,
+      "attention_tflops": 24.0,
+      "ffn_ms": 25.12,
+      "ffn_tflops": 14.36,
+      "full_layer_ms": 31.57,
+      "backward_ms": 51.91
+    },
+    "512": {
+      "attention_ms": 13.34,
+      "attention_tflops": 11.59,
+      "ffn_ms": 49.96,
+      "ffn_tflops": 7.22,
+      "full_layer_ms": 63.3,
+      "backward_ms": 107.37
+    },
+    "1024": {
+      "attention_ms": 29.89,
+      "attention_tflops": 5.17,
+      "ffn_ms": 100.38,
+      "ffn_tflops": 3.59,
+      "full_layer_ms": 130.27,
+      "backward_ms": 227.37
+    }
+  }
+}
