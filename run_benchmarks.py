@@ -220,30 +220,31 @@ def generate_summary_report(system_info, pytorch_results, mlx_results, memory_re
     
     print("\nReport saved to: results/reports/summary.txt")
 
+def get_machine_folder(system_info):
+    """Determine the folder name based on the chip."""
+    chip = system_info.get('chip', {}).get('chip_name', 'Unknown')
+    if 'M5' in chip:
+        return 'M5'
+    if 'M4 Pro' in chip:
+        return 'M4_Pro'
+    return chip.replace(' ', '_')
+
 def main():
-    parser = argparse.ArgumentParser(description="Mac ML Benchmark Suite")
-    parser.add_argument("--discovery-only", action="store_true", 
-                       help="Only run hardware discovery")
-    parser.add_argument("--pytorch-only", action="store_true",
-                       help="Only run PyTorch benchmarks")
-    parser.add_argument("--mlx-only", action="store_true",
-                       help="Only run MLX benchmarks")
-    parser.add_argument("--memory-only", action="store_true",
-                       help="Only run memory benchmarks")
-    parser.add_argument("--quick", action="store_true",
-                       help="Quick mode with smaller sizes")
-    parser.add_argument("--no-model", action="store_true",
-                       help="Skip model-level benchmarks (Mistral)")
-    
-    args = parser.parse_args()
-    
-    print_banner()
+    # ... (existing arg parsing) ...
     
     # Always run discovery
     system_info = run_discovery()
+    machine_folder = get_machine_folder(system_info)
+    raw_dir = f"results/raw/{machine_folder}"
+    report_dir = f"results/reports/{machine_folder}"
+    os.makedirs(raw_dir, exist_ok=True)
+    os.makedirs(report_dir, exist_ok=True)
     
     if args.discovery_only:
-        print("\n✅ Hardware discovery complete!")
+        # Save to machine folder
+        with open(f"{raw_dir}/system_info.json", "w") as f:
+            json.dump(system_info, f, indent=2)
+        print(f"\n✅ Hardware discovery complete! Saved to {raw_dir}")
         return
     
     pytorch_results = None

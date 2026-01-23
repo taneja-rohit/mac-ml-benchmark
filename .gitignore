@@ -28,3 +28,4 @@ build/
 # Model cache
 .cache/
 models/
+*.safetensors

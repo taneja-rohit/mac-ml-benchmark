@@ -1,0 +1,273 @@
+{
+  "framework": "pytorch_mps",
+  "device": "mps",
+  "timestamp": "2026-01-22T12:52:15.385721",
+  "benchmarks": {
+    "gemm": [
+      {
+        "name": "gemm_512x512",
+        "framework": "pytorch_mps",
+        "size": "512x512",
+        "dtype": "float32",
+        "time_ms": 0.6533562499999701,
+        "tflops": 0.41085618450885303,
+        "bandwidth_gbs": 4.8147209122131205,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.21129311941751297,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_1024x1024",
+        "framework": "pytorch_mps",
+        "size": "1024x1024",
+        "dtype": "float32",
+        "time_ms": 1.3142687499999917,
+        "tflops": 1.633976040288574,
+        "bandwidth_gbs": 9.574078361065864,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.2570275011455304,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_2048x2048",
+        "framework": "pytorch_mps",
+        "size": "2048x2048",
+        "dtype": "float32",
+        "time_ms": 4.761785399999985,
+        "tflops": 3.60786296333305,
+        "bandwidth_gbs": 10.569911025389796,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.038359895676882,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_4096x4096",
+        "framework": "pytorch_mps",
+        "size": "4096x4096",
+        "dtype": "float32",
+        "time_ms": 38.65558339999997,
+        "tflops": 3.5554748210578064,
+        "bandwidth_gbs": 5.2082150699088965,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.35545983478782595,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_8192x8192",
+        "framework": "pytorch_mps",
+        "size": "8192x8192",
+        "dtype": "float32",
+        "time_ms": 395.75288534999993,
+        "tflops": 2.778278234923298,
+        "bandwidth_gbs": 2.0348717540942123,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 1.676477143747786,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_512x512",
+        "framework": "pytorch_mps",
+        "size": "512x512",
+        "dtype": "float16",
+        "time_ms": 0.3270001000000633,
+        "tflops": 0.8209032841272771,
+        "bandwidth_gbs": 4.809980180433265,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.15682514786490276,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_1024x1024",
+        "framework": "pytorch_mps",
+        "size": "1024x1024",
+        "dtype": "float16",
+        "time_ms": 0.43746870000012095,
+        "tflops": 4.908885248246118,
+        "bandwidth_gbs": 14.381499750721046,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.15067972125534468,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_2048x2048",
+        "framework": "pytorch_mps",
+        "size": "2048x2048",
+        "dtype": "float16",
+        "time_ms": 1.3655166000000385,
+        "tflops": 12.581223241079249,
+        "bandwidth_gbs": 18.42952623204968,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.11803966400025609,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_4096x4096",
+        "framework": "pytorch_mps",
+        "size": "4096x4096",
+        "dtype": "float16",
+        "time_ms": 10.264433400000339,
+        "tflops": 13.38982368690662,
+        "bandwidth_gbs": 9.80699977068356,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 0.6165033551795858,
+          "iterations": 20
+        }
+      },
+      {
+        "name": "gemm_8192x8192",
+        "framework": "pytorch_mps",
+        "size": "8192x8192",
+        "dtype": "float16",
+        "time_ms": 88.00213544999976,
+        "tflops": 12.494147126699106,
+        "bandwidth_gbs": 4.575493332531411,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "std_ms": 6.276403750161054,
+          "iterations": 20
+        }
+      }
+    ],
+    "attention": [
+      {
+        "name": "attention_seq512",
+        "framework": "pytorch_mps",
+        "size": "seq=512, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 1.8332542000003116,
+        "tflops": 2.3428105584044316,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 16.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 512
+        }
+      },
+      {
+        "name": "attention_seq1024",
+        "framework": "pytorch_mps",
+        "size": "seq=1024, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 6.157725099999567,
+        "tflops": 2.7899701440067872,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 64.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 1024
+        }
+      },
+      {
+        "name": "attention_seq2048",
+        "framework": "pytorch_mps",
+        "size": "seq=2048, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 23.401208399999973,
+        "tflops": 2.9365781271363782,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 256.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 2048
+        }
+      },
+      {
+        "name": "attention_seq4096",
+        "framework": "pytorch_mps",
+        "size": "seq=4096, heads=32, dim=128",
+        "dtype": "float16",
+        "time_ms": 96.37906670000014,
+        "tflops": 2.852049893776359,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 1024.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "batch_size": 1,
+          "num_heads": 32,
+          "head_dim": 128,
+          "seq_len": 4096
+        }
+      }
+    ],
+    "transformer_block": [
+      {
+        "name": "transformer_block_seq256",
+        "framework": "pytorch_mps",
+        "size": "",
+        "dtype": "",
+        "time_ms": 0.0,
+        "tflops": 0.0,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "error": "module 'torch' has no attribute 'silu'"
+        }
+      },
+      {
+        "name": "transformer_block_seq512",
+        "framework": "pytorch_mps",
+        "size": "",
+        "dtype": "",
+        "time_ms": 0.0,
+        "tflops": 0.0,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "error": "module 'torch' has no attribute 'silu'"
+        }
+      },
+      {
+        "name": "transformer_block_seq1024",
+        "framework": "pytorch_mps",
+        "size": "",
+        "dtype": "",
+        "time_ms": 0.0,
+        "tflops": 0.0,
+        "bandwidth_gbs": 0.0,
+        "memory_mb": 0.0,
+        "utilization_pct": 0.0,
+        "extra": {
+          "error": "module 'torch' has no attribute 'silu'"
+        }
+      }
+    ]
+  }
+}
