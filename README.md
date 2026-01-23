@@ -1,117 +1,80 @@
 # Mac ML Benchmark Suite 🍎
 
-Comprehensive ML benchmarks for Apple Silicon Macs.  
-Compares **PyTorch+MPS** vs **MLX** vs **llama.cpp** for deep learning workloads.
+Benchmark ML performance on Apple Silicon. Tested on M5 (24GB), ready for M4 Pro.
 
-## Key Findings (Apple M5, 24GB)
-
-| Framework | Inference | Training | Memory | Best For |
-|-----------|-----------|----------|--------|----------|
-| **PyTorch+MPS** | 7.7 t/s | **174 t/s** 🏆 | 14.5 GB | Training |
-| **MLX** (4-bit) | **26.5 t/s** 🏆 | 130 t/s | 4.5 GB | Inference |
-| **llama.cpp** | 24.0 t/s | N/A | 5.0 GB | Deployment |
-
-> **Note**: Earlier versions incorrectly stated PyTorch+MPS cannot run Mistral-7B.  
-> This was WRONG. PyTorch CAN load and train Mistral-7B in float16.
-
-## Quick Start
+## Quick Start (M4 Pro)
 
 ```bash
-# Clone and setup
 git clone https://github.com/taneja-rohit/mac-ml-benchmark.git
 cd mac-ml-benchmark
 python3 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-pip install mlx mlx-lm datasets llama-cpp-python
+pip install torch transformers accelerate mlx mlx-lm datasets llama-cpp-python
 
-# Run all benchmarks
+# Run all benchmarks (results auto-save to results/raw/M4_Pro/)
 python run_benchmarks.py
-
-# Or run specific tests
-python run_benchmarks.py --discovery-only   # Hardware info
-python run_benchmarks.py --pytorch-only     # PyTorch+MPS
-python run_benchmarks.py --mlx-only         # MLX
 ```
 
-## GEMM Performance (Matrix Multiply)
+---
 
-| Size | PyTorch float32 | PyTorch float16 | MLX |
-|------|-----------------|-----------------|-----|
-| 2048 | 3.43 TFLOPS | 12.62 TFLOPS | 3.32 TFLOPS |
-| 4096 | 3.16 TFLOPS | **13.84 TFLOPS** 🏆 | 3.25 TFLOPS |
+## Results: Apple M5 (24GB)
 
-**PyTorch float16 is 3.8x faster than MLX** due to Apple's hand-tuned MPSGraph kernels.
+### Key Numbers
 
-## Memory Bandwidth
+| Metric | PyTorch+MPS | MLX (4-bit) | llama.cpp |
+|--------|-------------|-------------|-----------|
+| **GEMM (FP16)** | **13.8 TFLOPS** | 3.6 TFLOPS | N/A |
+| **Inference** | 7.7 t/s | **26.5 t/s** | 24.0 t/s |
+| **Training** | **174 t/s** | 130 t/s | N/A |
+| **Memory** | 14.5 GB | 4.5 GB | 5.0 GB |
 
-| Metric | Value |
-|--------|-------|
-| Read | 113 GB/s |
-| Write | 113 GB/s |
-| Copy | **119 GB/s** |
-| Theoretical | ~200 GB/s |
-| Utilization | ~60% |
+### MFU (Utilization)
 
-## The MPS "12GB Limit" (Corrected)
+| Metric | Achieved | Theoretical | MFU |
+|--------|----------|-------------|-----|
+| FP16 GEMM | 14.1 TFLOPS | 24 TFLOPS | **59%** |
+| Memory BW | 118 GB/s | 200 GB/s | **59%** |
+| Model Training | 7.6 TFLOPS | 24 TFLOPS | **32%** |
 
-**The limit is PER-TENSOR, not total memory.**
+### Layer-by-Layer (float16 vs float16)
+
+| Component | PyTorch+MPS | MLX | Winner |
+|-----------|-------------|-----|--------|
+| Attention | 2.5ms | 6.4ms | **PyTorch 2.6x** |
+| FFN | 6.6ms | 25.1ms | **PyTorch 3.8x** |
+| Backward | 18.3ms | 51.9ms | **PyTorch 2.8x** |
+
+---
+
+## What We Learned
+
+1. **PyTorch+MPS CAN run Mistral-7B** — The 12GB limit is per-tensor, not total memory
+2. **At same precision, PyTorch is 2.5-3.5x faster** than MLX
+3. **MLX wins for inference** only because of 4-bit quantization (less memory bandwidth)
+4. **59% MFU is excellent** — same as NVIDIA datacenter GPUs on real workloads
+
+---
+
+## Files
 
 ```
-Mistral-7B:
-├── Total size: 14.48 GB
-├── Largest tensor: ~1.1 GB
-└── Result: ✅ LOADS SUCCESSFULLY
-
-The model is distributed across many tensors,
-each under 12GB, so it fits.
+results/raw/M5/
+├── system_info.json              # Hardware specs
+├── pytorch_mps_benchmarks.json   # GEMM/Attention benchmarks
+├── layer_benchmark_float16.json  # Fair PyTorch vs MLX comparison
+├── framework_comparison.json     # All 3 frameworks
+├── mfu_utilization.json          # MFU analysis
+├── memory_benchmarks.json        # Bandwidth tests
+└── pytorch_mps_mistral_finetune.json  # Training benchmark
 ```
 
-## Project Structure
+---
 
-```
-mac-ml-benchmark/
-├── run_benchmarks.py              # Main runner
-├── BENCHMARK_RESULTS.md           # Detailed results & analysis
-├── CONSTRAINTS_AND_LEARNINGS.md   # Technical deep-dive
-├── discovery/
-│   └── system_info.py             # Hardware detection
-├── benchmarks/
-│   ├── compute/                   # GEMM, Attention benchmarks
-│   └── memory/                    # Bandwidth tests
-├── data/                          # Alpaca dataset (for training)
-└── results/
-    └── raw/
-        └── M5/                    # Your machine's results
-            └── M4_Pro/            # (When you run on other machine)
-```
+## Documentation
 
-## Fine-Tuning Results
+- **[BENCHMARK_RESULTS.md](BENCHMARK_RESULTS.md)** — Detailed analysis with explanations
+- **[CONSTRAINTS_AND_LEARNINGS.md](CONSTRAINTS_AND_LEARNINGS.md)** — Technical deep-dive
 
-Both PyTorch+MPS and MLX can fine-tune Mistral-7B:
-
-```bash
-# MLX (easier, lower memory)
-python -m mlx_lm lora --model mlx-community/Mistral-7B-Instruct-v0.2-4bit \
-    --data ./data --train --iters 50
-
-# PyTorch (faster training throughput)
-# See benchmarks/compute/pytorch_mps.py
-```
-
-| Framework | Method | Speed | Peak Memory |
-|-----------|--------|-------|-------------|
-| **PyTorch+MPS** | LM Head only | **174 t/s** | 15.3 GB |
-| **MLX** | LoRA | 130 t/s | 7.5 GB |
-
-## Running on M4 Pro
-
-Results are automatically saved to `results/raw/M4_Pro/`:
-
-```bash
-git clone https://github.com/taneja-rohit/mac-ml-benchmark.git
-cd mac-ml-benchmark
-python run_benchmarks.py  # Detects M4 Pro and saves separately
-```
+---
 
 ## License
 
