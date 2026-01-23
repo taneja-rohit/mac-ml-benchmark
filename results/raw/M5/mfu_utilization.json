@@ -1,0 +1,31 @@
+{
+  "float32": {
+    "achieved_tflops": 3.49,
+    "theoretical_tflops": 12.0,
+    "mfu_percent": 29.1,
+    "best_size": 2048
+  },
+  "float16": {
+    "achieved_tflops": 14.13,
+    "theoretical_tflops": 24.0,
+    "mfu_percent": 58.9,
+    "best_size": 4096
+  },
+  "sustained_fp16": {
+    "tflops": 14.16,
+    "mfu_percent": 59.0,
+    "duration_seconds": 5,
+    "iterations": 516
+  },
+  "memory_bandwidth": {
+    "theoretical_gbs": 200,
+    "achieved_gbs": 118.4,
+    "utilization_percent": 59.2
+  },
+  "model_level_mfu": {
+    "model": "Mistral-7B",
+    "tokens_per_sec": 174,
+    "achieved_tflops": 7.56,
+    "mfu_percent": 31.5
+  }
+}
