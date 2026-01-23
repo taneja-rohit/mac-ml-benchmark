@@ -1,0 +1,25 @@
+{
+  "mode": "ep",
+  "duration": 5.0,
+  "traffic_summary": {
+    "duration_seconds": 5.220532957999999,
+    "num_samples": 418,
+    "send_gbs": {
+      "avg": 0.0,
+      "max": 0.0,
+      "min": 0.0
+    },
+    "recv_gbs": {
+      "avg": 0.0,
+      "max": 0.0,
+      "min": 0.0
+    },
+    "total_gbs": {
+      "avg": 0.0,
+      "max": 0.0,
+      "min": 0.0
+    },
+    "thunderbolt_utilization_percent": 0.0
+  },
+  "timestamp": "2026-01-22T23:41:12.191833"
+}
