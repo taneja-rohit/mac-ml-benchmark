@@ -1,81 +1,126 @@
-# Mac ML Benchmark Suite 🍎
+# 🍎 Apple Silicon ML Benchmark: The M5 vs. M4 Pro Architectural Shift
 
-Benchmark ML performance on Apple Silicon. Tested on M5 (24GB), ready for M4 Pro.
+This repository is a deep-dive technical investigation into the evolving architecture of Apple Silicon for GenAI. It moves beyond "speed tests" to analyze **Arithmetic Intensity**, **Model FLOPs Utilization (MFU)**, and the **Inference Paradox** across the newest generations of Mac hardware.
 
-## Quick Start (M4 Pro)
+---
 
+## 🚀 Executive Summary: The "Inference Paradox"
+
+Our benchmarks revealed a fundamental architectural pivot in Apple’s chip design between the **M4 Pro (2024)** and the **M5 (2025)**.
+
+*   **M5 (The Compute Monster):** Optimized for **Compute Density**. It introduces integrated **Neural Accelerators** into every GPU core. Result: **2.5x faster training** and fine-tuning than the M4 Pro.
+*   **M4 Pro (The Bandwidth Beast):** Optimized for **Data Throughput**. Its wider memory bus achieves 2x higher bandwidth. Result: **2.1x faster inference** (token generation) than the M5.
+
+**The TL;DR:** For training/fine-tuning where math is the bottleneck, the M5 is king. For inference where loading weights is the bottleneck, the M4 Pro remains the king.
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Requirements
+*   macOS 15.0+
+*   Python 3.9+
+*   Thunderbolt 4 cable (for Phase 2 Distributed benchmarks)
+
+### 2. Setup
 ```bash
 git clone https://github.com/taneja-rohit/mac-ml-benchmark.git
 cd mac-ml-benchmark
 python3 -m venv venv && source venv/bin/activate
-pip install torch transformers accelerate mlx mlx-lm datasets llama-cpp-python
+pip install -r requirements.txt
+```
 
-# Run all benchmarks (results auto-save to results/raw/M4_Pro/)
-python run_benchmarks.py
+### 3. Run Benchmarks
+```bash
+# Results auto-save to results/raw/<CHIP_NAME>/
+python3 run_benchmarks.py
 ```
 
 ---
 
-## Results: Apple M5 (24GB)
+## 🧠 The "Why": Methodology & Reasoning
 
-### Key Numbers
+### Why Benchmark Layers Separately?
+Modern LLM performance is often obscured by framework overhead. We break benchmarks down into:
+1.  **Raw GEMM**: To measure peak theoretical compute (TFLOPS).
+2.  **Attention Mechanisms**: To measure memory-latency sensitivity.
+3.  **Transformer Blocks**: To measure fused-kernel efficiency.
+4.  **End-to-End (Mistral-7B)**: To measure real-world application performance.
 
-| Metric | PyTorch+MPS | MLX (4-bit) | llama.cpp |
-|--------|-------------|-------------|-----------|
-| **GEMM (FP16)** | **13.8 TFLOPS** | 3.6 TFLOPS | N/A |
-| **Inference** | 7.7 t/s | **26.5 t/s** | 24.0 t/s |
-| **Training** | **174 t/s** | 130 t/s | N/A |
-| **Memory** | 14.5 GB | 4.5 GB | 5.0 GB |
-
-### MFU (Utilization)
-
-| Metric | Achieved | Theoretical | MFU |
-|--------|----------|-------------|-----|
-| FP16 GEMM | 14.1 TFLOPS | 24 TFLOPS | **59%** |
-| Memory BW | 118 GB/s | 200 GB/s | **59%** |
-| Model Training | 7.6 TFLOPS | 24 TFLOPS | **32%** |
-
-### Layer-by-Layer (float16 vs float16)
-
-| Component | PyTorch+MPS | MLX | Winner |
-|-----------|-------------|-----|--------|
-| Attention | 2.5ms | 6.4ms | **PyTorch 2.6x** |
-| FFN | 6.6ms | 25.1ms | **PyTorch 3.8x** |
-| Backward | 18.3ms | 51.9ms | **PyTorch 2.8x** |
+### The Shift from Bandwidth to Compute Density
+Historically, Macs were loved for their massive Unified Memory bandwidth. However, as models move from simple inference to complex fine-tuning (LoRA/QLoRA), the bottleneck shifts from **loading weights** to **calculating gradients**. The M5 is Apple's answer to this shift, prioritizing "FLOPs per Watt" over "Bytes per Second."
 
 ---
 
-## What We Learned
+## 💻 Hardware Analysis: M5 vs. M4 Pro
 
-1. **PyTorch+MPS CAN run Mistral-7B** — The 12GB limit is per-tensor, not total memory
-2. **At same precision, PyTorch is 2.5-3.5x faster** than MLX
-3. **MLX wins for inference** only because of 4-bit quantization (less memory bandwidth)
-4. **59% MFU is excellent** — same as NVIDIA datacenter GPUs on real workloads
+| Feature | Apple M5 (Base) | Apple M4 Pro |
+| :--- | :--- | :--- |
+| **Primary Strength** | **Compute Density** | **Memory Throughput** |
+| **New Tech** | Integrated Neural Accelerators | High-Width Memory Bus |
+| **Peak FP16 TFLOPS** | **13.8 TFLOPS** | 6.1 TFLOPS |
+| **Peak Bandwidth** | 118 GB/s | **253 GB/s** |
+| **Ridge Point** | 116.9 FLOPs/Byte | 24.0 FLOPs/Byte |
 
----
-
-## Files
-
-```
-results/raw/M5/
-├── system_info.json              # Hardware specs
-├── pytorch_mps_benchmarks.json   # GEMM/Attention benchmarks
-├── layer_benchmark_float16.json  # Fair PyTorch vs MLX comparison
-├── framework_comparison.json     # All 3 frameworks
-├── mfu_utilization.json          # MFU analysis
-├── memory_benchmarks.json        # Bandwidth tests
-└── pytorch_mps_mistral_finetune.json  # Training benchmark
-```
+### Reasoning:
+*   **M5 wins Training** because its GPU cores now contain dedicated matrix-math units (similar to NVIDIA Tensor Cores), allowing it to process backward passes significantly faster.
+*   **M4 Pro wins Inference** because token generation is a "weight-reading" game. The M4 Pro's 256-bit bus (approx) moves weights twice as fast as the M5's restricted 128-bit bus.
 
 ---
 
-## Documentation
+## ⚡ Framework Battle: PyTorch+MPS vs. MLX
 
-- **[BENCHMARK_RESULTS.md](BENCHMARK_RESULTS.md)** — Detailed analysis with explanations
-- **[CONSTRAINTS_AND_LEARNINGS.md](CONSTRAINTS_AND_LEARNINGS.md)** — Technical deep-dive
+We tested both frameworks at the **exact same precision (Float16)** to remove quantization bias.
+
+*   **PyTorch + MPS (The Powerhouse):** Currently achieves **2.3x higher TFLOPS** on M5. Apple’s `MPSGraph` is highly optimized for the new M5 Neural Accelerators.
+*   **MLX (The Efficient):** Excellent for memory-constrained inference and 4-bit quantization, but currently underperforms in raw FP16 GEMM on M5, suggesting a need for kernel updates for the 2026 hardware.
 
 ---
 
-## License
+## 📊 Visual Proof: Roofline Analysis
 
-MIT
+The **Roofline Model** below proves that Mistral-7B inference is strictly **Memory-Bound**.
+
+![Roofline Comparison](results/reports/roofline_comparison.png)
+
+*   **Memory Bound Zone:** Both chips are stuck on the "slanted roof." The M4 Pro's roof is higher, thus it runs faster.
+*   **Compute Bound Zone:** During training, we hit the "flat top." The M5's top is much higher, thus it trains faster.
+
+---
+
+## 📉 Ruthless Raw Data
+
+### 1. GEMM Performance (Float16)
+| Matrix Size | M5 (TFLOPS) | M4 Pro (TFLOPS) |
+| :--- | :--- | :--- |
+| 1024x1024 | 6.32 | 2.78 |
+| 4096x4096 | **13.84** | 6.03 |
+| 8192x8192 | **12.49** | 6.07 |
+
+### 2. Memory Bandwidth (Achieved)
+| Metric | M5 | M4 Pro |
+| :--- | :--- | :--- |
+| Sequential Read | 118.4 GB/s | **253.2 GB/s** |
+| Sequential Write | 110.2 GB/s | **170.5 GB/s** |
+| Memory Copy | 118.9 GB/s | **230.3 GB/s** |
+
+### 3. Training Step (Mistral-7B Layer, seq=512)
+| Phase | M5 | M4 Pro |
+| :--- | :--- | :--- |
+| Forward Pass | **18.2 ms** | 46.8 ms |
+| Backward Pass | **39.5 ms** | 95.0 ms |
+| **Total Step** | **57.7 ms** | **141.8 ms** |
+
+---
+
+## 📁 Repository Structure
+*   `benchmarks/`: Core logic for compute, memory, and model tests.
+*   `distributed/`: Tools for multi-Mac training (Traffic monitoring).
+*   `visualizations/`: Roofline and traffic plotting scripts.
+*   `results/raw/`: JSON artifacts from every run.
+
+---
+
+## 📖 Further Reading
+- [Detailed Analysis & Strategy](M5_VS_M4_PRO_ANALYSIS.md)
+- [Technical Constraints & Learnings](CONSTRAINTS_AND_LEARNINGS.md)
