@@ -1,13 +1,11 @@
-# 🍎 Apple Silicon ML Benchmark: The M5 vs. M4 Pro Architectural Shift
-
-This repository is a deep-dive technical investigation into the evolving architecture of Apple Silicon for GenAI. It moves beyond "speed tests" to analyze **Arithmetic Intensity**, **Model FLOPs Utilization (MFU)**, and the **Inference Paradox** across the newest generations of Mac hardware.
+# Silicon ML Benchmarks: 
+This repository is a technical investigation into the evolving architecture for GenAI. It moves beyond "speed tests" to analyze **Arithmetic Intensity**, **Model FLOPs Utilization (MFU)**, and the **Inference Paradox** .
 
 ---
 
-## 🚀 Executive Summary: The "Inference Paradox"
+##  Summary: The "Inference Paradox"
 
-Our benchmarks revealed a fundamental architectural pivot in Apple’s chip design between the **M4 Pro (2024)** and the **M5 (2025)**.
-
+Machines being used: 
 *   **M5 (The Compute Monster):** Optimized for **Compute Density**. It introduces integrated **Neural Accelerators** into every GPU core. Result: **2.5x faster training** and fine-tuning than the M4 Pro.
 *   **M4 Pro (The Bandwidth Beast):** Optimized for **Data Throughput**. Its wider memory bus achieves 2x higher bandwidth. Result: **2.1x faster inference** (token generation) than the M5.
 
@@ -38,7 +36,7 @@ python3 run_benchmarks.py
 
 ---
 
-## 🧠 The "Why": Methodology & Reasoning
+## The "Why": Methodology & Reasoning
 
 ### Why Benchmark Layers Separately?
 Modern LLM performance is often obscured by framework overhead. We break benchmarks down into:
@@ -47,8 +45,8 @@ Modern LLM performance is often obscured by framework overhead. We break benchma
 3.  **Transformer Blocks**: To measure fused-kernel efficiency.
 4.  **End-to-End (Mistral-7B)**: To measure real-world application performance.
 
-### The Shift from Bandwidth to Compute Density
-Historically, Macs were loved for their massive Unified Memory bandwidth. However, as models move from simple inference to complex fine-tuning (LoRA/QLoRA), the bottleneck shifts from **loading weights** to **calculating gradients**. The M5 is Apple's answer to this shift, prioritizing "FLOPs per Watt" over "Bytes per Second."
+### The Dance of Bandwidth and Compute Density
+Models move from fine-tuning to recall to reasoning, the bottleneck takes a pendulamic shigt from **loading weights** to **calculating gradients**. Interestingly, Apple's latest M5 is prioritizing "FLOPs per Watt" over "Bytes per Second.". 
 
 ---
 
