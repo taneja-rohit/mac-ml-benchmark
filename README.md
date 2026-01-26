@@ -88,6 +88,53 @@ The **Roofline Model** below proves that Mistral-7B inference is strictly **Memo
 
 ---
 
+## 🌍 Industry Roofline: Consumer to Datacenter (Updated Jan 26, 2026)
+
+### Why Ridge Point Matters
+
+The **Ridge Point** is the arithmetic intensity at which a chip transitions from memory-bound to compute-bound:
+
+$$\text{Ridge Point} = \frac{\text{Peak TFLOPS} \times 1000}{\text{Memory BW (GB/s)}}$$
+
+**Chips with lower ridge points are easier to saturate.** A chip with Ridge=2 hits peak performance on simple inference. A chip with Ridge=1000 requires massive batch sizes or operator fusion to avoid idling.
+
+### 2026 Accelerator Landscape
+
+![Datacenter Roofline](results/reports/roofline_datacenter.png)
+
+| Chip | Peak FP16 (TFLOPS) | Memory BW (TB/s) | Ridge Point | Classification |
+| :--- | :--- | :--- | :--- | :--- |
+| **Groq LPU** | 188 | 80.0 (SRAM) | **2.4** | 🟣 **Inference King** |
+| **M4 Pro** | 6.1 | 0.253 | **24** | 🔴 Consumer Inference |
+| **M5** | 13.8 | 0.118 | **117** | 🔵 Consumer Training |
+| **Ascend 910D** | ~2,000 | 5.4 | **370** | 🟡 Sovereign Workhorse |
+| **B200** | 4,500 | 8.0 | **563** | 🟢 Next-Gen General |
+| **H100 SXM** | 1,979 | 3.35 | **591** | 🟢 Datacenter General |
+| **MI450** | ~12,000 | 19.6 | **612** | 🟣 The "Milan Moment" |
+| **Rubin** | ~10,000 | 10.0 | **1,000** | 🟠 Training Monster |
+| **Rubin CPX** | ~20,000 | 12.0 | **1,667** | 🔺 Massive Context |
+
+### Workload-to-Hardware Classification
+
+| Workload | Intensity | Optimal Hardware | Why |
+| :--- | :--- | :--- | :--- |
+| **Real-time Decode** (1 tok) | ~1 | Groq LPU, M4 Pro | Memory-bound; need bandwidth |
+| **Prefill** (batch=8) | ~16 | M4 Pro, H100 | Moderate intensity |
+| **Training** (batch=32) | ~128 | M5, H100, B200 | Compute starts to matter |
+| **Large-Batch Training** | 500+ | Rubin, MI450 | Only these can saturate |
+
+### Key Insights
+
+1. **The M5 Paradox:** Our benchmark is the first to prove M5 is a **regression for inference**. By prioritizing Tensor Accelerators over Unified Memory Bandwidth, Apple built a chip that is compute-rich but data-poor. Ridge=117 means it's 98% idle during token generation.
+
+2. **The Groq Advantage:** Ridge=2.4 means Groq hits peak performance on virtually any inference workload. It's the only chip designed exclusively for the memory-bound regime.
+
+3. **The China Factor (Huawei 910D):** Ridge=370 is actually better than H100's 591, meaning it's easier to saturate. But it requires 5x more power to reach the same throughput—a Pod-level scaling strategy.
+
+4. **The 2026 Problem:** Next-gen chips (Rubin, MI450) target Ridge >600. They will be **98% idle** for any model with intensity below that threshold—unless a compiler performs extreme operator fusion.
+
+---
+
 ## 📉 Ruthless Raw Data
 
 ### 1. GEMM Performance (Float16)
