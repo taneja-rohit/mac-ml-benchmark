@@ -1,13 +1,11 @@
-# 🍎 Apple Silicon ML Benchmark: The M5 vs. M4 Pro Architectural Shift
-
-This repository is a deep-dive technical investigation into the evolving architecture of Apple Silicon for GenAI. It moves beyond "speed tests" to analyze **Arithmetic Intensity**, **Model FLOPs Utilization (MFU)**, and the **Inference Paradox** across the newest generations of Mac hardware.
+# Silicon ML Benchmarks
+This repository is a technical investigation into the evolving architecture for GenAI. It moves beyond "speed tests" to analyze **Arithmetic Intensity**, **Model FLOPs Utilization (MFU)**, and the **Inference Paradox**.
 
 ---
 
-## 🚀 Executive Summary: The "Inference Paradox"
+## Summary: The "Inference Paradox"
 
-Our benchmarks revealed a fundamental architectural pivot in Apple’s chip design between the **M4 Pro (2024)** and the **M5 (2025)**.
-
+Machines being used: 
 *   **M5 (The Compute Monster):** Optimized for **Compute Density**. It introduces integrated **Neural Accelerators** into every GPU core. Result: **2.5x faster training** and fine-tuning than the M4 Pro.
 *   **M4 Pro (The Bandwidth Beast):** Optimized for **Data Throughput**. Its wider memory bus achieves 2x higher bandwidth. Result: **2.1x faster inference** (token generation) than the M5.
 
@@ -38,7 +36,7 @@ python3 run_benchmarks.py
 
 ---
 
-## 🧠 The "Why": Methodology & Reasoning
+## The "Why": Methodology & Reasoning
 
 ### Why Benchmark Layers Separately?
 Modern LLM performance is often obscured by framework overhead. We break benchmarks down into:
@@ -47,8 +45,8 @@ Modern LLM performance is often obscured by framework overhead. We break benchma
 3.  **Transformer Blocks**: To measure fused-kernel efficiency.
 4.  **End-to-End (Mistral-7B)**: To measure real-world application performance.
 
-### The Shift from Bandwidth to Compute Density
-Historically, Macs were loved for their massive Unified Memory bandwidth. However, as models move from simple inference to complex fine-tuning (LoRA/QLoRA), the bottleneck shifts from **loading weights** to **calculating gradients**. The M5 is Apple's answer to this shift, prioritizing "FLOPs per Watt" over "Bytes per Second."
+### The Dance of Bandwidth and Compute Density
+Models move from fine-tuning to recall to reasoning, the bottleneck takes a pendulamic shift from **loading weights** to **calculating gradients**. Interestingly, Apple's latest M5 is prioritizing "FLOPs per Watt" over "Bytes per Second."
 
 ---
 
@@ -72,12 +70,12 @@ Historically, Macs were loved for their massive Unified Memory bandwidth. Howeve
 
 We tested both frameworks at the **exact same precision (Float16)** to remove quantization bias.
 
-*   **PyTorch + MPS (The Powerhouse):** Currently achieves **2.3x higher TFLOPS** on M5. Apple’s `MPSGraph` is highly optimized for the new M5 Neural Accelerators.
+*   **PyTorch + MPS (The Powerhouse):** Currently achieves **2.3x higher TFLOPS** on M5. Apple's `MPSGraph` is highly optimized for the new M5 Neural Accelerators.
 *   **MLX (The Efficient):** Excellent for memory-constrained inference and 4-bit quantization, but currently underperforms in raw FP16 GEMM on M5, suggesting a need for kernel updates for the 2026 hardware.
 
 ---
 
-## 📊 Visual Proof: Roofline Analysis
+## 📊 Visual Proof: Roofline Analysis (M5 vs M4 Pro)
 
 The **Roofline Model** below proves that Mistral-7B inference is strictly **Memory-Bound**.
 
@@ -135,7 +133,7 @@ $$\text{Ridge Point} = \frac{\text{Peak TFLOPS} \times 1000}{\text{Memory BW (GB
 
 ---
 
-## 📉 Ruthless Raw Data
+## Raw Data
 
 ### 1. GEMM Performance (Float16)
 | Matrix Size | M5 (TFLOPS) | M4 Pro (TFLOPS) |
@@ -160,7 +158,7 @@ $$\text{Ridge Point} = \frac{\text{Peak TFLOPS} \times 1000}{\text{Memory BW (GB
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 *   `benchmarks/`: Core logic for compute, memory, and model tests.
 *   `distributed/`: Tools for multi-Mac training (Traffic monitoring).
 *   `visualizations/`: Roofline and traffic plotting scripts.
@@ -168,6 +166,12 @@ $$\text{Ridge Point} = \frac{\text{Peak TFLOPS} \times 1000}{\text{Memory BW (GB
 
 ---
 
-## 📖 Further Reading
+## Further Reading
 - [Detailed Analysis & Strategy](M5_VS_M4_PRO_ANALYSIS.md)
 - [Technical Constraints & Learnings](CONSTRAINTS_AND_LEARNINGS.md)
+
+---
+
+## Next: What We're Thinking
+- DeepSeek MoE 16B with distributed fine-tune over M5 and M4 connected over Thunderbolt
+- Disaggregated fine-tuning (Prefill on FLOPS-heavy M5 and Decode on high-throughput M4)
