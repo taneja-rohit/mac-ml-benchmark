@@ -185,14 +185,20 @@ class KVServer:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         # Set large send buffer for Thunderbolt throughput
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 16 * 1024 * 1024)
+        try:
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 2 * 1024 * 1024)
+        except OSError:
+            pass  # Use OS default if can't set
         self.sock.bind((self.host, self.port))
         self.sock.listen(1)
         print(f"[KV Server] Listening on {self.host}:{self.port}")
     
     def wait_for_client(self) -> socket.socket:
         conn, addr = self.sock.accept()
-        conn.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 16 * 1024 * 1024)
+        try:
+            conn.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 2 * 1024 * 1024)
+        except OSError:
+            pass
         conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         print(f"[KV Server] Client connected from {addr}")
         return conn
@@ -212,7 +218,10 @@ class KVClient:
     
     def connect(self, timeout: float = 30.0):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 16 * 1024 * 1024)
+        try:
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 2 * 1024 * 1024)
+        except OSError:
+            pass
         self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         self.sock.settimeout(timeout)
         print(f"[KV Client] Connecting to {self.server_host}:{self.port}...")
