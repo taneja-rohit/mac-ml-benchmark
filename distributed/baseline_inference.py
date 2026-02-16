@@ -1,8 +1,11 @@
 """
 Baseline Inference — Single Machine (No Disaggregation)
 
-Runs full prefill + decode on ONE machine for comparison against
-the disaggregated setup.
+Runs full prefill + decode on ONE machine with warmup for fair comparison
+against the disaggregated setup.
+
+Uses the EXACT same prompt, model, and token count as the disaggregated
+experiment (experiment_config.py).
 
 Run on M5:
     python distributed/baseline_inference.py --machine M5
@@ -14,8 +17,13 @@ Run on M4 Pro:
 import argparse
 import json
 import os
+import sys
 import time
 import torch
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from experiment_config import MODEL_NAME, MAX_NEW_TOKENS, NUM_RUNS, LONG_PROMPT
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
@@ -42,12 +50,34 @@ def load_model(model_name: str, dtype=torch.float16):
     return model, tokenizer, load_time
 
 
-def run_full_inference(model, tokenizer, prompt: str, max_new_tokens: int = 128, device: str = "mps"):
+def warmup_model(model, tokenizer, device="mps"):
+    """
+    Warmup MPS shader compilation.
+    Same as prefill/decode nodes — compiles both prefill and decode kernels.
+    """
+    print(f"[Baseline] Warming up MPS shaders...")
+    
+    # Warmup 1: Prefill-style
+    short_input = tokenizer("Hello world", return_tensors="pt").to(device)
+    with torch.no_grad():
+        out = model(**short_input, use_cache=True, return_dict=True)
+    torch.mps.synchronize()
+    
+    # Warmup 2: Decode-style (single token + KV cache)
+    next_id = torch.argmax(out.logits[:, -1, :], dim=-1, keepdim=True)
+    with torch.no_grad():
+        _ = model(input_ids=next_id, past_key_values=out.past_key_values,
+                  use_cache=True, return_dict=True)
+    torch.mps.synchronize()
+    
+    print(f"[Baseline] Warmup complete — MPS shaders compiled")
+
+
+def run_full_inference(model, tokenizer, prompt: str, max_new_tokens: int = MAX_NEW_TOKENS, device: str = "mps"):
     """
     Run complete inference (prefill + decode) on a single machine.
     Measures prefill and decode separately for apples-to-apples comparison.
     """
-    # Tokenize
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
     input_len = inputs.input_ids.shape[1]
     print(f"[Baseline] Prompt: {input_len} tokens, generating up to {max_new_tokens} tokens")
@@ -109,7 +139,7 @@ def run_full_inference(model, tokenizer, prompt: str, max_new_tokens: int = 128,
             print(f"[Baseline] EOS at token {i+2}")
             break
         
-        if (i + 2) % 32 == 0:
+        if (i + 2) % 64 == 0:
             elapsed = time.perf_counter() - t_decode_start
             tps = (i + 2) / elapsed
             print(f"[Baseline] Token {i+2}/{max_new_tokens} ({tps:.1f} tok/s)")
@@ -141,12 +171,12 @@ def run_full_inference(model, tokenizer, prompt: str, max_new_tokens: int = 128,
 
 def main():
     parser = argparse.ArgumentParser(description="Baseline Inference (Single Machine)")
-    parser.add_argument("--model", default="mistralai/Mistral-7B-v0.1")
-    parser.add_argument("--prompt", default="Explain the theory of general relativity in simple terms. Start with")
-    parser.add_argument("--max-tokens", type=int, default=128)
+    parser.add_argument("--model", default=MODEL_NAME)
+    parser.add_argument("--prompt", default=LONG_PROMPT)
+    parser.add_argument("--max-tokens", type=int, default=MAX_NEW_TOKENS)
     parser.add_argument("--machine", default="unknown", help="Machine name (M5 or M4_Pro)")
     parser.add_argument("--dtype", default="float16", choices=["float16", "float32"])
-    parser.add_argument("--runs", type=int, default=3, help="Number of runs to average")
+    parser.add_argument("--runs", type=int, default=NUM_RUNS, help="Number of runs to average")
     args = parser.parse_args()
     
     dtype = torch.float16 if args.dtype == "float16" else torch.float32
@@ -154,9 +184,17 @@ def main():
     # Load model
     model, tokenizer, load_time = load_model(args.model, dtype)
     
-    # Warmup run
-    print(f"\n[Baseline] Warmup run...")
-    _ = run_full_inference(model, tokenizer, args.prompt, max_new_tokens=8)
+    # WARMUP — compile MPS shaders before any timing
+    warmup_model(model, tokenizer)
+    
+    # Check prompt token count
+    test_tokens = tokenizer(args.prompt, return_tensors="pt")
+    prompt_token_count = test_tokens.input_ids.shape[1]
+    print(f"\n[Baseline] Experiment config:")
+    print(f"  Machine:        {args.machine}")
+    print(f"  Prompt tokens:  {prompt_token_count}")
+    print(f"  Max new tokens: {args.max_tokens}")
+    print(f"  Runs:           {args.runs}")
     
     # Benchmark runs
     all_results = []
@@ -184,12 +222,14 @@ def main():
     print(f"\n{'='*60}")
     print(f"[Baseline] AVERAGED RESULTS ({args.runs} runs) on {args.machine}:")
     print(f"{'='*60}")
-    print(f"  Prefill:     {avg['prefill_time_ms']:.1f}ms")
-    print(f"  Decode:      {avg['decode_time_ms']:.1f}ms ({avg['generated_tokens']:.0f} tokens)")
-    print(f"  Tok/s:       {avg['tokens_per_sec']:.1f}")
-    print(f"  TTFT:        {avg['ttft_ms']:.1f}ms")
-    print(f"  Total E2E:   {avg['total_e2e_ms']:.1f}ms")
-    print(f"  Avg/token:   {avg['avg_token_latency_ms']:.2f}ms")
+    print(f"  Prompt tokens:  {all_results[0]['prompt_tokens']}")
+    print(f"  Generated:      {avg['generated_tokens']:.0f} tokens")
+    print(f"  Prefill:        {avg['prefill_time_ms']:.1f}ms")
+    print(f"  Decode:         {avg['decode_time_ms']:.1f}ms")
+    print(f"  Tok/s:          {avg['tokens_per_sec']:.1f}")
+    print(f"  TTFT:           {avg['ttft_ms']:.1f}ms")
+    print(f"  Total E2E:      {avg['total_e2e_ms']:.1f}ms")
+    print(f"  Avg/token:      {avg['avg_token_latency_ms']:.2f}ms")
     print(f"{'='*60}")
     
     # Save
@@ -197,10 +237,12 @@ def main():
         "role": "baseline",
         "machine": args.machine,
         "model": args.model,
-        "prompt": args.prompt,
+        "prompt": args.prompt[:200],
+        "prompt_tokens": all_results[0]['prompt_tokens'],
         "max_new_tokens": args.max_tokens,
         "dtype": args.dtype,
         "num_runs": args.runs,
+        "warmup": True,
         "load_time_s": load_time,
         "averaged": avg,
         "all_runs": all_results,

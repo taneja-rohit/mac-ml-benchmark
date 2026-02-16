@@ -1,0 +1,13 @@
+{
+  "role": "prefill",
+  "machine": "M5",
+  "model": "mistralai/Mistral-7B-v0.1",
+  "prompt_tokens": 15,
+  "load_time_s": 20.908020667,
+  "prefill_time_ms": 999.5276249999989,
+  "serialize_time_ms": 19.6022919999983,
+  "transfer_time_ms": 0.14750000000063324,
+  "kv_size_mb": 1.8920621871948242,
+  "tb_throughput_gbps": 107.60520677919905,
+  "tb_throughput_gbs": 13.450650847399881
+}
