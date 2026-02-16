@@ -24,5 +24,8 @@ pyyaml
 psutil
 rich  # Pretty console output
 
+# Distributed
+ray[default]
+
 # Optional: for detailed profiling
 # py-spy  # CPU profiling

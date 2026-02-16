@@ -2,12 +2,60 @@
   "role": "prefill",
   "machine": "M5",
   "model": "mistralai/Mistral-7B-v0.1",
-  "prompt_tokens": 15,
-  "load_time_s": 20.908020667,
-  "prefill_time_ms": 999.5276249999989,
-  "serialize_time_ms": 19.6022919999983,
-  "transfer_time_ms": 0.14750000000063324,
-  "kv_size_mb": 1.8920621871948242,
-  "tb_throughput_gbps": 107.60520677919905,
-  "tb_throughput_gbs": 13.450650847399881
+  "prompt_tokens": 871,
+  "max_new_tokens": 256,
+  "num_runs": 3,
+  "warmup": true,
+  "load_time_s": 21.537424916,
+  "averaged": {
+    "prefill_time_ms": 5388.476458333324,
+    "serialize_time_ms": 92.52419433333141,
+    "transfer_time_ms": 572.3807500000172,
+    "kv_size_mb": 108.89248943328857,
+    "tb_throughput_gbps": 4.829510579483196
+  },
+  "all_runs": [
+    {
+      "run": 1,
+      "prompt_tokens": 871,
+      "prefill_time_ms": 11161.81841599996,
+      "serialize_time_ms": 117.96358299994836,
+      "transfer_time_ms": 78.8163750000308,
+      "kv_size_mb": 108.89248943328857,
+      "tb_throughput_gbps": 11.589678007896747,
+      "tb_throughput_gbs": 1.4487097509870934
+    },
+    {
+      "run": 2,
+      "prompt_tokens": 871,
+      "prefill_time_ms": 2401.073333999989,
+      "serialize_time_ms": 74.1444160000242,
+      "transfer_time_ms": 425.7473330000039,
+      "kv_size_mb": 108.89248943328857,
+      "tb_throughput_gbps": 2.145536418427762,
+      "tb_throughput_gbs": 0.26819205230347026
+    },
+    {
+      "run": 3,
+      "prompt_tokens": 871,
+      "prefill_time_ms": 2602.537625000025,
+      "serialize_time_ms": 85.46458400002166,
+      "transfer_time_ms": 1212.578542000017,
+      "kv_size_mb": 108.89248943328857,
+      "tb_throughput_gbps": 0.753317312125079,
+      "tb_throughput_gbs": 0.09416466401563488
+    }
+  ],
+  "decode_results": {
+    "prefill_time_ms": 5388.476458333324,
+    "serialize_time_ms": 92.52419433333141,
+    "transfer_time_ms": 604.2805693333358,
+    "deserialize_time_ms": 1370.382541666667,
+    "decode_time_ms": 26741.977778,
+    "tokens_per_sec": 8.737683487353019,
+    "ttft_ms": 7552.52111066666,
+    "total_e2e_ms": 34197.641541666664,
+    "avg_token_latency_ms": 117.6202318198064,
+    "generated_tokens": 229.0
+  }
 }
