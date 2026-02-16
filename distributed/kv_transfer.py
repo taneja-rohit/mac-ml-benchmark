@@ -56,25 +56,38 @@ def serialize_kv_cache(past_key_values: Tuple) -> bytes:
 
 def serialize_kv_from_dynamic_cache(cache) -> bytes:
     """
-    Serialize a DynamicCache object (HF transformers >= 4.36).
+    Serialize a DynamicCache object.
+    Supports both old API (key_cache/value_cache) and new API (layers).
     """
     cpu_kv = []
-    for layer_idx in range(len(cache.key_cache)):
-        cpu_kv.append((
-            cache.key_cache[layer_idx].cpu(),
-            cache.value_cache[layer_idx].cpu()
-        ))
+    
+    if hasattr(cache, 'layers') and len(cache.layers) > 0:
+        # New transformers >= 4.50 API
+        for layer in cache.layers:
+            cpu_kv.append((
+                layer.keys.cpu(),
+                layer.values.cpu()
+            ))
+    elif hasattr(cache, 'key_cache'):
+        # Old transformers API
+        for layer_idx in range(len(cache.key_cache)):
+            cpu_kv.append((
+                cache.key_cache[layer_idx].cpu(),
+                cache.value_cache[layer_idx].cpu()
+            ))
+    else:
+        raise ValueError(f"Unknown cache format: {type(cache)}, attrs: {dir(cache)}")
     
     buffer = io.BytesIO()
     torch.save(cpu_kv, buffer)
     return buffer.getvalue()
 
 
-def deserialize_kv_cache(data: bytes, device: str = "mps") -> Tuple:
+def deserialize_kv_cache(data: bytes, device: str = "mps"):
     """
-    Deserialize bytes back to past_key_values on target device.
+    Deserialize bytes back to a DynamicCache on target device.
     
-    Returns tuple of (key, value) per layer, moved to target device.
+    Returns DynamicCache with all layers moved to target device.
     """
     from transformers.cache_utils import DynamicCache
     
